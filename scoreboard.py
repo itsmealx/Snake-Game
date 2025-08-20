@@ -5,6 +5,8 @@ class Scoreboard(Turtle):
     def __init__(self):
         super().__init__()
         self.score = 0
+        with open("high_score.txt") as high_score:
+            self.highest_score = int(high_score.read())
         self.color("white")
         self.penup()
         self.hideturtle()
@@ -13,15 +15,18 @@ class Scoreboard(Turtle):
 
     def update_score(self):
         """Displays the current score at the top of the screen."""
-        self.write(arg=f"Score: {self.score}", align="center", font=("Arial", 15, "normal"))
+        self.clear()
+        self.write(arg=f"Score: {self.score} High Score: {self.highest_score}", align="center", font=("Arial", 15, "normal"))
 
     def add_score(self):
         """Increase the score by 1 and update the score written on top."""
         self.score += 1
-        self.clear() #clearing the previous drawing
         self.update_score()
 
-    def game_over(self):
-        """Triggered when the game is over. i.g. collision with head or tail."""
-        self.goto(0, 0)
-        self.write(arg="GAME OVER!", align="center", font=("Arial", 15, "normal"))
+    def restart(self):
+        if self.score > self.highest_score:
+            self.highest_score = self.score
+            with open("high_score.txt" , mode="w") as file:
+                file.write(str(self.highest_score))
+        self.score = 0
+        self.update_score()

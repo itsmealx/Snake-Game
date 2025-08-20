@@ -73,4 +73,12 @@ class Snake:
         for i, segment in enumerate(reversed(self.snake)):
             screen.ontimer(lambda s=segment: s.color(food_color), i * 100)
 
+    def reset_snake(self):
+        """Initialize the snake again if game is over."""
+        for s in self.snake:
+            s.reset() #clears the drawing from the screen
+        self.snake.clear()
+        self._create_snake()
+        self.snake_head = self.snake[0]
+
 
